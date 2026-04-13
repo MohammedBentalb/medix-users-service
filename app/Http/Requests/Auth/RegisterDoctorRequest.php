@@ -21,7 +21,7 @@ class RegisterDoctorRequest extends FormRequest
             'lastName'        => ['required', 'string', 'max:100'],
             'speciality'      => ['required', 'string', 'max:100'],
             'nationalId'      => ['nullable', 'string', 'max:50', Rule::unique('users', 'national_id')],
-            'licenseNumber'   => ['required', 'string', 'max:100', Rule::unique('users', 'license_number')],
+            'licenseNumber'   => ['required', 'string', 'max:100', Rule::unique('doctor_profiles', 'license_number')],
             'yearsExperience' => ['required', 'integer', 'min:0'],
             'consultationFee' => ['nullable', 'numeric', 'min:0'],
             'bio'             => ['nullable', 'string'],

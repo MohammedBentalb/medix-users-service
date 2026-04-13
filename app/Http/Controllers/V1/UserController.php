@@ -6,6 +6,8 @@ use App\Actions\Admin\AssignRolesAction;
 use App\Actions\Admin\GetUserAction;
 use App\Actions\Admin\ListUsersAction;
 use App\Actions\Admin\UpdateUserStatusAction;
+use App\Actions\Doctor\ListDoctorPatientsAction;
+use App\Actions\Doctor\ListPatientDoctorsAction;
 use App\Enums\UserStatusEnum;
 use App\Enums\UserTypeEnum;
 use App\Http\Controllers\Controller;
@@ -17,14 +19,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class UserController extends Controller {
-
-    public function __construct(
-        private ListUsersAction $listUsersAction,
-        private GetUserAction $getUserAction,
-        private UpdateUserStatusAction $updateUserStatusAction,
-        private AssignRolesAction $assignRolesAction,
-    ) {}
-
+    public function __construct( private ListUsersAction $listUsersAction, private GetUserAction $getUserAction, private UpdateUserStatusAction $updateUserStatusAction, private AssignRolesAction $assignRolesAction, private ListDoctorPatientsAction $listDoctorPatients, private ListPatientDoctorsAction $listPatientDoctors) {}
     public function index(Request $request): JsonResponse {
         $paginator = $this->listUsersAction->execute($request);
         return ApiResponse::UsersWithPaginationResponse($paginator);
@@ -52,7 +47,6 @@ class UserController extends Controller {
         $paginator = $this->listUsersAction->execute($request);
         return ApiResponse::UsersWithPaginationResponse($paginator);
     }
-
 
     public function show(string $id): JsonResponse {
         $user = $this->getUserAction->execute($id);

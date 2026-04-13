@@ -15,11 +15,11 @@ class LoginAction implements LoginUserContract {
     public function __construct(private RefreshTokenSerice $refreshTokenService) {}
 
     public function execute(LoginDTO $credentials, string $type): array {
-        if(!$token = auth('api')->attempt(['email' => $credentials->email, 'password' => $credentials->password])) throw new InvalidCredentialsException();
+        if(!$token = auth()->guard('api')->attempt(['email' => $credentials->email, 'password' => $credentials->password])) throw new InvalidCredentialsException();
         $user = auth('api')->user();
         
         if($user->type !== UserTypeEnum::from($type)){
-            auth('api')->logout();
+            auth()->guard('api')->logout();
             throw new WrongLoginPortalException();
         };
 

@@ -2,8 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\UserTypeEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class UserResourse extends JsonResource {
     public function toArray(Request $request): array {
@@ -13,7 +15,7 @@ class UserResourse extends JsonResource {
             'firstName' => $this->first_name,
             'lastName'  => $this->last_name,
             'phone'     => $this->phone,
-            'image'     => $this->image,
+            'image'     => $this->image ,
             'nationalId'=> $this->national_id,
             'type'      => $this->type,
             'status'    => $this->status,
@@ -25,13 +27,13 @@ class UserResourse extends JsonResource {
 
     private function resolveProfile(): mixed {
         return match($this->type->value) {
-            'patient'   => $this->whenLoaded('patientProfile',
+            UserTypeEnum::PATIENT->value => $this->whenLoaded('patientProfile',
                 fn() => new PatientProfileResource($this->patientProfile)
             ),
-            'doctor'    => $this->whenLoaded('doctorProfile',
+            UserTypeEnum::DOCTOR->value => $this->whenLoaded('doctorProfile',
                 fn() => new DoctorProfileResource($this->doctorProfile)
             ),
-            'assistant' => $this->whenLoaded('assistantProfile',
+            UserTypeEnum::ASSISTANT->value => $this->whenLoaded('assistantProfile',
                 fn() => new AssistantProfileResource($this->assistantProfile)
             ),
             default => null,

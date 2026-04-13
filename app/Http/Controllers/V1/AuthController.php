@@ -24,11 +24,11 @@ use Illuminate\Http\Request;
 class AuthController extends Controller {
 
     public function __construct(
-        private LoginAction            $loginAction,
+        private LoginAction $loginAction,
         private RegisterPatientAction  $registerPatientAction,
         private RegisterDoctorAction   $registerDoctorAction,
         private RegisterAssistantAction $registerAssistantAction,
-        private RefreshTokenSerice     $refreshTokenService,
+        private RefreshTokenSerice $refreshTokenService,
     ) {}
 
     public function login(LoginRequest $request): JsonResponse {
@@ -48,7 +48,7 @@ class AuthController extends Controller {
 
     public function logout(Request $request): JsonResponse {
         $this->refreshTokenService->revoke($request->input('refreshToken'));
-        auth('api')->logout();
+        auth()->guard('api')->logout();
         return ApiResponse::success(['message' => 'Logged out successfully.']);
     }
 
@@ -71,8 +71,8 @@ class AuthController extends Controller {
             'accessToken'  => $result['accessToken'],
             'refreshToken' => $result['refreshToken'],
             'tokenType'    => 'Bearer',
-            'expiresIn'    => config('jwt.ttl') * 60,
-            'user'         => new UserResourse($result['user']),
+            'expiresIn' => config('jwt.ttl') * 60,
+            'user' => new UserResourse($result['user']),
         ], 201);
     }
 
@@ -82,9 +82,9 @@ class AuthController extends Controller {
         return ApiResponse::success([
             'accessToken'  => $result['accessToken'],
             'refreshToken' => $result['refreshToken'],
-            'tokenType'    => 'Bearer',
-            'expiresIn'    => config('jwt.ttl') * 60,
-            'user'         => new UserResourse($result['user']),
+            'tokenType' => 'Bearer',
+            'expiresIn' => config('jwt.ttl') * 60,
+            'user' => new UserResourse($result['user']),
         ], 201);
     }
 
@@ -96,8 +96,8 @@ class AuthController extends Controller {
         return ApiResponse::success([
             'accessToken'  => $result['accessToken'],
             'refreshToken' => $result['refreshToken'],
-            'tokenType'    => 'Bearer',
-            'expiresIn'    => config('jwt.ttl') * 60,
+            'tokenType' => 'Bearer',
+            'expiresIn' => config('jwt.ttl') * 60,
         ]);
     }
 }
