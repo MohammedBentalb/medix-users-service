@@ -20,10 +20,13 @@ class RabbitMQConnection {
                 env('RABBITMQ_VHOST', '/'),
             );
             $this->channel = $this->connection->channel();
-            $this->channel->exchange_declare('users.events', 'topic', false, true, false);
+            // $this->channel->exchange_declare('users.events', 'topic', false, true, false);
+            $this->channel->exchange_declare('scheduling.events', 'topic', false, true, false);
+            $this->channel->queue_declare('appointments.queue', false, true, false, false);
+            $this->channel->queue_bind('appointments.queue', 'scheduling.events', 'appointment.booked');
         } catch (\Throwable $e) {
             Log::error('RabbitMQ connection failed', ['error' => $e->getMessage()]);
-            throw new \RuntimeException('Failed to connect to RabbitMQ', 0, $e);
+            throw new \RuntimeException('Failed to connect to RabbitMQ: ' . $e->getMessage(), 0, $e);
         }
     }
 

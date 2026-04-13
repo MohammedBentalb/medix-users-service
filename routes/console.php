@@ -10,3 +10,4 @@ Artisan::command('inspire', function () {
 
 
 Schedule::command('app:send-heartbeat')->everyMinute();
+Schedule::command('app:consume-appointment-events')->everyMinute();
