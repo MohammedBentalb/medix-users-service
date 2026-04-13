@@ -30,6 +30,15 @@ class User extends Authenticatable implements JWTSubject{
         ];
     }
 
+    public function patients(): BelongsToMany{
+        return $this->belongsToMany(self::class, 'doctors_patients', 'doctor_id', 'patient_id')->withTimestamps();
+    }
+    
+    public function doctors(): BelongsToMany{
+        return $this->belongsToMany(self::class, 'doctors_patients', 'patient_id', 'doctor_id')->withTimestamps();
+    }
+
+
     public function roles(): BelongsToMany {
         return $this->belongsToMany(Role::class, 'user_roles')->withTimestamps();
     }
@@ -44,6 +53,10 @@ class User extends Authenticatable implements JWTSubject{
 
     public function assistantProfile(): HasOne {
         return $this->hasOne(AssistantProfile::class);
+    }
+
+    public function assistants(): HasMany {
+        return $this->hasMany(AssistantProfile::class, 'doctor_id');
     }
 
     public function refreshTokens(): HasMany {
@@ -67,9 +80,9 @@ class User extends Authenticatable implements JWTSubject{
 
     public function loadProfile(){
         $relation = match($this->type->value) {
-            'patient' => 'patientProfile',
-            'doctor' => 'doctorProfile',
-            'assistant' => 'assistantProfile',
+            UserTypeEnum::PATIENT->value => 'patientProfile',
+            UserTypeEnum::DOCTOR->value => 'doctorProfile',
+            UserTypeEnum::ASSISTANT->value => 'assistantProfile',
             default => null,
         };
 

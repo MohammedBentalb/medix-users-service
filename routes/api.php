@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\V1\AuthController;
+use App\Http\Controllers\V1\DoctorController;
 use App\Http\Controllers\V1\ProfileController;
 use App\Http\Controllers\V1\UserController;
 use Illuminate\Support\Facades\Route;
@@ -36,4 +37,15 @@ Route::prefix('v1/users')->middleware('internal')->group(function () {
     Route::get('/{id}', [UserController::class, 'show']);
     Route::put('/{id}/status', [UserController::class, 'updateStatus']);
     Route::post('/{id}/roles', [UserController::class, 'assignRoles']);
+});
+
+Route::prefix('v1/doctor')->middleware('internal')->group(function () {
+    Route::post('/assistants', [DoctorController::class, 'assignAssistant']);
+    Route::get('/assistants', [DoctorController::class, 'listAssistants']);
+    Route::delete('/assistants/{assistantId}', [DoctorController::class, 'removeAssistant']);
+    Route::get('/patients', [DoctorController::class, 'listDoctorPatients']);
+});
+
+Route::prefix('v1/patient')->middleware('internal')->group(function () {
+    Route::get('/doctors', [DoctorController::class, 'listPatientDoctors']);
 });

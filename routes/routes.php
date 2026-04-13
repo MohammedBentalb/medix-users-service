@@ -16,11 +16,18 @@ return [
     ['path' => '/api/v1/users/me/profile/assistant', 'method' => 'PUT',  'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::USER->value, UserTypeEnum::ASSISTANT->value]],
     ['path' => '/api/v1/users/me/password',          'method' => 'PUT',  'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::ADMIN->value]],
 
-    ['path' => '/api/v1/users/all/admins',               'method' => 'GET',  'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::ADMIN->value]],
-    ['path' => '/api/v1/users/all/doctors',              'method' => 'GET',  'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::USER->value]],
-    ['path' => '/api/v1/users/all/assistants',           'method' => 'GET',  'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::USER->value]],
-    ['path' => '/api/v1/users/all/patients',             'method' => 'GET',  'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::USER->value]],
-    ['path' => '/api/v1/users/{id}',                 'method' => 'GET',  'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::USER->value]],
-    ['path' => '/api/v1/users/{id}/status',          'method' => 'PUT',  'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::ADMIN->value]],
+    ['path' => '/api/v1/users/all/admins', 'method' => 'GET',  'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::ADMIN->value]],
+    ['path' => '/api/v1/users/all/doctors', 'method' => 'GET',  'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::USER->value]],
+    ['path' => '/api/v1/users/all/assistants', 'method' => 'GET',  'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::USER->value]],
+    ['path' => '/api/v1/users/all/patients', 'method' => 'GET',  'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::USER->value]],
+    ['path' => '/api/v1/users/{id}', 'method' => 'GET',  'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::USER->value]],
+    ['path' => '/api/v1/users/{id}/status','method' => 'PUT',  'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::ADMIN->value]],
     ['path' => '/api/v1/users/{id}/roles',           'method' => 'POST', 'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::ADMIN->value]],
+
+    ['path' => '/api/v1/doctor/assistants', 'method' => 'POST',   'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::DOCTOR->value]],
+    ['path' => '/api/v1/doctor/assistants', 'method' => 'GET',    'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::DOCTOR->value]],
+    ['path' => '/api/v1/doctor/assistants/{assistantId}','method' => 'DELETE', 'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::DOCTOR->value]],
+    ['path' => '/api/v1/doctor/patients', 'method' => 'GET', 'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::DOCTOR->value, UserTypeEnum::ASSISTANT->value]],
+
+    ['path' => '/api/v1/patient/doctors','method' => 'GET', 'public' => false, 'permissions' => [], 'roles' => [UserTypeEnum::PATIENT->value]],
 ];
