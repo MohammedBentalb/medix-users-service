@@ -13,7 +13,7 @@ class ListUsersAction {
         if($adminsOnly) {
             $query->where('type', UserTypeEnum::ADMIN);
             if($search = $request->query('search')) $query->where('first_name', 'ilike', "%{$search}%")->orWhere('last_name', 'ilike', "%{$search}%");
-            return $query->paginate($request->query('perPage', 15));
+            return $query->paginate($request->query('perPage', 6));
         }
         
         $query->where('type', '!=', UserTypeEnum::ADMIN);
@@ -24,8 +24,17 @@ class ListUsersAction {
             $query->whereHas('roles', function($q) use($role) {
                 $q->where('name', $role);
             });
-        }        
+        }      
+        
+        $profileRelation = match($role){
+            UserTypeEnum::DOCTOR->value => 'doctorProfile',
+            UserTypeEnum::PATIENT->value => 'patientProfile',
+            UserTypeEnum::ASSISTANT->value => 'assistantProfile',
+            default => null
+        };
       
+        if($profileRelation) $query->with($profileRelation);
+
         if ($search = $request->query('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('first_name', 'ilike', "%{$search}%")
@@ -33,6 +42,6 @@ class ListUsersAction {
             });
         }
 
-        return $query->paginate($request->query('perPage', 15));
+        return $query->paginate($request->query('perPage', 6));
     }
 }

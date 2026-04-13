@@ -17,6 +17,6 @@ class SendHeartbeatAction {
         ];
 
         $response = Http::retry(3, 1000)->withHeader('X-Internal-Token', config('app.internal_token'))->post(config('app.discovery_url') . '/api/heartbeat', $data);
-        
+   
     }
 }
