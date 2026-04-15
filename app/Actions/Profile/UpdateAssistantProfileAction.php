@@ -16,7 +16,7 @@ class UpdateAssistantProfileAction {
 
         if (!empty($userFields)) $user->update($userFields);
         if ($dto->avatar) {
-            $path = $dto->avatar->store('avatars', 's3');
+            $path = $dto->avatar->store('image', 's3');
             $user->update(['image' => $path]);
         }
         return $user->fresh()->load('assistantProfile');

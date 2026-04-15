@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 final class ApiResponse {
     public static function success(mixed $data, int $statusCode = 200): JsonResponse{
-        return Response()->json([
+        return response()->json([
             'success' => true,
             'data' => $data,
             'meta' => self::meta(), 
@@ -24,7 +24,7 @@ final class ApiResponse {
     }
 
     public static function error(string $code, string $message, int $statusCode, array $details = []): JsonResponse {
-        return Response()->json([
+        return response()->json([
             'success' => false,
             'errors' => [
                 'code' => $code,

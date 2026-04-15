@@ -15,7 +15,7 @@ class UpdateAssistantProfileRequest extends FormRequest {
             'firstName' => ['sometimes', 'string', 'max:100'],
             'lastName'  => ['sometimes', 'string', 'max:100'],
             'phone'  => ['sometimes', 'nullable', 'string', 'max:20'],
-            'avatar' => ['sometimes', 'nullable', 'image', File::types(['jgp', 'jpeg', 'png', 'webp']) , 'max:2048'],
+            'avatar' => ['sometimes', 'nullable', 'image', File::types(['jpg', 'jpeg', 'png', 'webp']) , 'max:2048'],
         ];
     }
 }

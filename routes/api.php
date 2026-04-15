@@ -27,6 +27,12 @@ Route::prefix('v1/users')->middleware('internal')->group(function () {
         Route::put('/password', [ProfileController::class, 'changePassword']);
     });
     
+    Route::prefix('me/assistants')->group(function () {
+        Route::post('/', [DoctorController::class, 'assignAssistant']);
+        Route::get('/', [DoctorController::class, 'listAssistants']);
+        Route::delete('/{assistantId}', [DoctorController::class, 'removeAssistant']);
+    });
+
     Route::prefix('all')->group(function () {
         Route::get('/admins', [UserController::class, 'getAdmins']);
         Route::get('/doctors', [UserController::class, 'getDoctors']);

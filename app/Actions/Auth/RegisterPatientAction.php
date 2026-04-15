@@ -8,8 +8,6 @@ use App\Models\PatientProfile;
 use App\Models\User;
 use App\Enums\UserStatusEnum;
 use App\Enums\UserTypeEnum;
-use App\Exceptions\DuplicatedEmailException;
-use App\Exceptions\DuplicatedNationalIdException;
 use App\Services\RefreshTokenSerice;
 use App\Models\Role;
 use Illuminate\Support\Facades\DB;
@@ -20,31 +18,25 @@ class RegisterPatientAction implements RegisterPatientContract {
     public function __construct(private RefreshTokenSerice $refreshTokenService) {}
 
     public function execute(RegisterPatientDTO $userInfo): array {
-        $foundUser = User::where('email', $userInfo->email)->first();
-        if ($foundUser) throw new DuplicatedEmailException();
-
-        $foundNationalId = User::where('national_id', $userInfo->nationalId)->first();
-        if ($foundNationalId) throw new DuplicatedNationalIdException();
-
         $user = DB::transaction(function () use ($userInfo) {
             $user = User::create([
-                'first_name'  => $userInfo->firstName,
-                'last_name'   => $userInfo->lastName,
-                'email'       => $userInfo->email,
-                'password'    => $userInfo->password,
-                'phone'       => $userInfo->phone,
+                'first_name' => $userInfo->firstName,
+                'last_name' => $userInfo->lastName,
+                'email' => $userInfo->email,
+                'password' => $userInfo->password,
+                'phone' => $userInfo->phone,
                 'national_id' => $userInfo->nationalId,
-                'type'        => UserTypeEnum::PATIENT,
-                'status'      => UserStatusEnum::ACTIVE,
+                'type' => UserTypeEnum::PATIENT,
+                'status' => UserStatusEnum::ACTIVE,
             ]);
 
             PatientProfile::create([
-                'user_id'                 => $user->id,
-                'date_of_birth'           => $userInfo->dateOfBirth,
-                'gender'                  => $userInfo->gender,
-                'blood_type'              => $userInfo->bloodType,
-                'address'                 => $userInfo->address,
-                'emergency_contact_name'  => $userInfo->emergencyContactName,
+                'user_id' => $user->id,
+                'date_of_birth' => $userInfo->dateOfBirth,
+                'gender' => $userInfo->gender,
+                'blood_type' => $userInfo->bloodType,
+                'address' => $userInfo->address,
+                'emergency_contact_name' => $userInfo->emergencyContactName,
                 'emergency_contact_phone' => $userInfo->emergencyContactPhone,
             ]);
 
@@ -57,13 +49,12 @@ class RegisterPatientAction implements RegisterPatientContract {
         });
 
         if ($userInfo->avatar) {
-            $path = $userInfo->avatar->store('avatars', 's3');
+            $path = $userInfo->avatar->store('image', 's3');
             $user->update(['image' => $path]);
         }
 
-        $token        = JWTAuth::fromUser($user);
+        $token = JWTAuth::fromUser($user);
         $refreshToken = $this->refreshTokenService->issue($user);
-
         return ['user' => $user->load('patientProfile'), 'accessToken' => $token, 'refreshToken' => $refreshToken];
     }
 }

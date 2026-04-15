@@ -12,13 +12,13 @@ class RegisterAssistantRequest extends FormRequest {
 
     public function rules(): array{
         return [
-            'email'      => ['required', 'email', 'max:180', Rule::unique('users', 'email')],
-            'password'   => ['required', 'string', 'min:8', 'confirmed'],
+            'email' => ['required', 'email', 'max:180', Rule::unique('users', 'email')],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
             'firstName' => ['required', 'string', 'max:100'],
-            'lastName'  => ['required', 'string', 'max:100'],
+            'lastName' => ['required', 'string', 'max:100'],
             'nationalId' => ['nullable', 'string', 'max:50', Rule::unique('users', 'national_id')],
-            'avatar'     => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
-            'phone'      => ['nullable', 'string', 'max:20'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'phone' => ['nullable', 'string', 'max:20'],
         ];
     }
 }

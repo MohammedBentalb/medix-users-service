@@ -30,7 +30,7 @@ readonly class RegisterPatientDTO {
             password: $data['password'],
             firstName: $data['firstName'],
             lastName: $data['lastName'],
-            avatar: $request->file('avatar'),
+            avatar: $request->file('image'),
             dateOfBirth: $data['dateOfBirth'],
             gender: $data['gender'],
             bloodType: $data['bloodType'] ?? null,

@@ -8,8 +8,6 @@ use App\Models\AssistantProfile;
 use App\Models\User;
 use App\Enums\UserStatusEnum;
 use App\Enums\UserTypeEnum;
-use App\Exceptions\DuplicatedEmailException;
-use App\Exceptions\DuplicatedNationalIdException;
 use App\Services\RefreshTokenSerice;
 use App\Models\Role;
 use Illuminate\Support\Facades\DB;
@@ -20,22 +18,16 @@ class RegisterAssistantAction implements RegisterAssistantContract {
     public function __construct(private RefreshTokenSerice $refreshTokenService) {}
 
     public function execute(RegisterAssistantDTO $userInfo): array {
-        $foundUser = User::where('email', $userInfo->email)->first();
-        if ($foundUser) throw new DuplicatedEmailException();
-
-        $foundNationalId = User::where('national_id', $userInfo->nationalId)->first();
-        if ($foundNationalId) throw new DuplicatedNationalIdException();
-
         $user = DB::transaction(function () use ($userInfo) {
             $user = User::create([
-                'first_name'  => $userInfo->firstName,
-                'last_name'   => $userInfo->lastName,
-                'email'       => $userInfo->email,
-                'password'    => $userInfo->password,
-                'phone'       => $userInfo->phone,
+                'first_name' => $userInfo->firstName,
+                'last_name' => $userInfo->lastName,
+                'email' => $userInfo->email,
+                'password' => $userInfo->password,
+                'phone' => $userInfo->phone,
                 'national_id' => $userInfo->nationalId,
-                'type'        => UserTypeEnum::ASSISTANT,
-                'status'      => UserStatusEnum::PENDING,
+                'type' => UserTypeEnum::ASSISTANT,
+                'status' => UserStatusEnum::PENDING,
             ]);
 
             AssistantProfile::create([
@@ -51,13 +43,12 @@ class RegisterAssistantAction implements RegisterAssistantContract {
         });
 
         if ($userInfo->avatar) {
-            $path = $userInfo->avatar->store('avatars', 's3');
+            $path = $userInfo->avatar->store('image', 's3');
             $user->update(['image' => $path]);
         }
 
-        $token        = JWTAuth::fromUser($user);
+        $token = JWTAuth::fromUser($user);
         $refreshToken = $this->refreshTokenService->issue($user);
-
         return ['user' => $user->load('assistantProfile'), 'accessToken' => $token, 'refreshToken' => $refreshToken];
     }
 }

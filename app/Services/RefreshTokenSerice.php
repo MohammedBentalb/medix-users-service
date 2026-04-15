@@ -18,7 +18,7 @@ class RefreshTokenSerice {
             'token_hash' => hash('sha256', $raw),
             'expires_at' => now()->addDays(7),
         ]);
-        return $raw;   
+        return $raw;
     }
 
     public function validate(string $rawToken): array {

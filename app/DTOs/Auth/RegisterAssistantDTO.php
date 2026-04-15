@@ -24,7 +24,7 @@ readonly class RegisterAssistantDTO {
             password: $data['password'],
             firstName: $data['firstName'],
             lastName: $data['lastName'],
-            avatar: $request->file('avatar'),
+            avatar: $request->file('image'),
             nationalId: $data['nationalId'] ?? null,
             phone: $data['phone'] ?? null,
         );

@@ -32,10 +32,7 @@ class AuthController extends Controller {
     ) {}
 
     public function login(LoginRequest $request): JsonResponse {
-        $result = $this->loginAction->execute(
-            LoginDTO::fromRequest($request),
-            $request->validated('type'),
-        );
+        $result = $this->loginAction->execute(LoginDTO::fromRequest($request), $request->validated('type'));
 
         return ApiResponse::success([
             'accessToken'  => $result['accessToken'],
@@ -68,9 +65,13 @@ class AuthController extends Controller {
         $result = $this->registerDoctorAction->execute(RegisterDoctorDTO::fromRequest($request));
 
         return ApiResponse::success([
-            'accessToken'  => $result['accessToken'],
+            'accessToken' => $result['accessToken'],
             'refreshToken' => $result['refreshToken'],
+<<<<<<< Updated upstream
             'tokenType'    => 'Bearer',
+=======
+            'tokenType' => 'Bearer',
+>>>>>>> Stashed changes
             'expiresIn' => config('jwt.ttl') * 60,
             'user' => new UserResourse($result['user']),
         ], 201);
@@ -80,7 +81,7 @@ class AuthController extends Controller {
         $result = $this->registerAssistantAction->execute(RegisterAssistantDTO::fromRequest($request));
 
         return ApiResponse::success([
-            'accessToken'  => $result['accessToken'],
+            'accessToken' => $result['accessToken'],
             'refreshToken' => $result['refreshToken'],
             'tokenType' => 'Bearer',
             'expiresIn' => config('jwt.ttl') * 60,
@@ -90,11 +91,10 @@ class AuthController extends Controller {
 
     public function refresh(Request $request): JsonResponse {
         $request->validate(['refreshToken' => ['required', 'string']]);
-
         $result = $this->refreshTokenService->validate($request->refreshToken);
 
         return ApiResponse::success([
-            'accessToken'  => $result['accessToken'],
+            'accessToken' => $result['accessToken'],
             'refreshToken' => $result['refreshToken'],
             'tokenType' => 'Bearer',
             'expiresIn' => config('jwt.ttl') * 60,

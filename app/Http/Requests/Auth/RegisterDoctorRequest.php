@@ -15,6 +15,7 @@ class RegisterDoctorRequest extends FormRequest
     public function rules(): array
     {
         return [
+<<<<<<< Updated upstream
             'email'            => ['required', 'email', 'max:180', Rule::unique('users', 'email')],
             'password'         => ['required', 'string', 'min:8', 'confirmed'],
             'firstName'       => ['required', 'string', 'max:100'],
@@ -22,11 +23,20 @@ class RegisterDoctorRequest extends FormRequest
             'speciality'      => ['required', 'string', 'max:100'],
             'nationalId'      => ['nullable', 'string', 'max:50', Rule::unique('users', 'national_id')],
             'licenseNumber'   => ['required', 'string', 'max:100', Rule::unique('doctor_profiles', 'license_number')],
+=======
+            'email' => ['required', 'email', 'max:180', Rule::unique('users', 'email')],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'firstName' => ['required', 'string', 'max:100'],
+            'lastName' => ['required', 'string', 'max:100'],
+            'speciality' => ['required', 'string', 'max:100'],
+            'nationalId' => ['nullable', 'string', 'max:50', Rule::unique('users', 'national_id')],
+            'licenseNumber' => ['required', 'string', 'max:100', Rule::unique('doctor_profiles', 'license_number')],
+>>>>>>> Stashed changes
             'yearsExperience' => ['required', 'integer', 'min:0'],
             'consultationFee' => ['nullable', 'numeric', 'min:0'],
-            'bio'             => ['nullable', 'string'],
-            'avatar'          => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
-            'phone'           => ['nullable', 'string', 'max:20'],
+            'bio' => ['nullable', 'string'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'phone' => ['nullable', 'string', 'max:20'],
         ];
     }
 }
