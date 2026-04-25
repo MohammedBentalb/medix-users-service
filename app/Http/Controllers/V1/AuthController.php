@@ -70,7 +70,7 @@ class AuthController extends Controller {
         return ApiResponse::success([
             'accessToken'  => $result['accessToken'],
             'refreshToken' => $result['refreshToken'],
-            'tokenType'    => 'Bearer',
+            'tokenType' => 'Bearer',
             'expiresIn' => config('jwt.ttl') * 60,
             'user' => new UserResourse($result['user']),
         ], 201);

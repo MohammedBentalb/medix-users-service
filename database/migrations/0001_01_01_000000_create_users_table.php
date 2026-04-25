@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('national_id', 50)->unique()->nullable();
             $table->string('status', 20)->default('pending');
             $table->timestamps();
-            $table->softDeletes();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

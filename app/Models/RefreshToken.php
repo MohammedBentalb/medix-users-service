@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['user_id', 'token_hash', 'expires_at', 'revoked_at', 'ip_address', 'user_agent'])]
+#[Fillable(['user_id', 'token_hash', 'expires_at', 'revoked_at'])]
 class RefreshToken extends Model {
     use HasUuids;
 
