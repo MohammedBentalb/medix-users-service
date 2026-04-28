@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\PublishOutboxEvents;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -10,4 +11,5 @@ Artisan::command('inspire', function () {
 
 
 Schedule::command('app:send-heartbeat')->everyMinute();
-Schedule::command('app:consume-appointment-events')->everyMinute();
+// Schedule::command('app:consume-appointment-events')->everyMinute();
+Schedule::job(PublishOutboxEvents::class)->everyMinute();

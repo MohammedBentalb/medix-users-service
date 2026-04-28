@@ -3,6 +3,7 @@
 namespace App\Actions\Profile;
 
 use App\DTOs\Profile\UpdatePatientProfileDTO;
+use App\Models\OutboxEvent;
 use App\Models\User;
 
 class UpdatePatientProfileAction {
@@ -15,6 +16,18 @@ class UpdatePatientProfileAction {
         ], fn($v) => $v !== null);
 
         if (!empty($userFields)) $user->update($userFields);
+
+        if(isset($userFields['first_name']) || isset($userFields['last_name'])){
+            OutboxEvent::create([
+                'topic' => 'user.name_updated',
+                'payload'=> [
+                    'user_id' => $user->id,
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'role' => $user->type->value,
+                ]
+            ]);
+        }
 
         if ($dto->avatar) {
             $path = $dto->avatar->store('avatars', 's3');

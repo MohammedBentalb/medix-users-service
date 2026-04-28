@@ -20,7 +20,12 @@ class RabbitMQConnection {
                 env('RABBITMQ_VHOST', '/'),
             );
             $this->channel = $this->connection->channel();
-            // $this->channel->exchange_declare('users.events', 'topic', false, true, false);
+            $this->channel->exchange_declare('users.events', 'topic', false, true, false);
+            $this->channel->queue_declare('users.queue', false, true, false, false);
+            $this->channel->queue_bind('users.queue', 'users.events', 'user.name_updated');
+            $this->channel->queue_bind('users.queue', 'users.events', 'user.deleted');
+
+            // scheduling queues
             $this->channel->exchange_declare('scheduling.events', 'topic', false, true, false);
             $this->channel->queue_declare('appointments.queue', false, true, false, false);
             $this->channel->queue_bind('appointments.queue', 'scheduling.events', 'appointment.booked');
